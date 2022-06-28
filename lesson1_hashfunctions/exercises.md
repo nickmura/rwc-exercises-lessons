@@ -22,7 +22,33 @@ high probability of finding an exploit.
 ## ex-03
 >Find a digest collision of the first 4/6 bits of any two input string MD5 hash digests.
 
-Currently not completed.
+I have an demonstration of a collision in which 3-6 of the leading bits of the hash are identical... however with larger collisions time complexity is worse. hash is an input of only characters, and hash2 is an input of only numbers (an increment of counter). The example is for 4 characters. I guarantee there's a much more efficient way to get a collision than my algorithm :( _(exercise3.py)_
+```python
+import hashlib
+import random
+fixed_hash = hashlib.md5()
+def collision():
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    p = bytes('b'.encode())
+    counter = 2
+    while True:
+        hash1 = hashlib.md5(bytes(p)).hexdigest()[:4]
+        hash2 = hashlib.md5(bytes(counter)).hexdigest()[:4]
+        
+        if hash1 == hash2:
+            print(counter, f'{p[:5]}...+{len(p[5:])} characters', hash1, hash2)
+            break
+        counter += 1 
+        p += bytes(random.choice(alphabet).encode())
+collision()
+```
+
+```
+Output: 34848 b'xib'...+34842 characters 26d9 26d9
+```
+
+
+
 
 ## ex-04
 >Explain and demonstrate how to calculates the Hamming Distance between two strings.
@@ -45,7 +71,9 @@ result = hamming(a,b)
 print('Hamming distance between a & b strings:',result)
 ```
 
-```Output: Hamming distance between a & b strings: 1.0``` 
+```
+Output: Hamming distance between a & b strings: 1.0
+``` 
 
 
 ## ex-05
@@ -103,7 +131,59 @@ Because the the strings were identical, the hamming distance prior to the bitfli
 ## ex-06
 > Explain and demonstrate the difference b/w Second Pre-Image Resistance and Collision Resistence.
 
-Currently not completed.
+On page 29, chapter 2 of Real World Cryptography, figure 2.4 and 2.5 show a diagram presenting a great abstraction of what the difference between them. Because they are similar, I think this greatly demonstrates
+their difference! They are mistaken for one another, people think of collision attacks when really are thinking of the former (second pre image). I am also guilty of that problem.
+
+![image](https://user-images.githubusercontent.com/92566574/176204302-0044fc7c-16b2-4ac7-9086-e2ea9ea14d03.png)
+
+![image](https://user-images.githubusercontent.com/92566574/176204386-2f33cefb-8117-4ef8-abbe-adfb092f25c3.png)
+
+The first diagram shows that _second pre image resistance_ or a _secoond pre image attack_ is when given X, find Y such that, H(x) = H(y).
+The second diagram shows that _collision resistance or a _collision attack_ is find x and y such that, H(x) = H(y).
+
+Second pre image attacks, counter-intuitvely are much more difficult to accomplish. Let's use
+the example of the birthday problem or paradox. As mentioned in the next question, it's the
+probability that a pair of two people will share the same birthday, which is a collision attack! _(Find x and y such that B(x) = B(y))_ 
+
+But if we were to say... Given x, find y that has the same birthday as X... The probability would be much, much less. Because we are discriminately finding a B(y) also equal to a predetermined B(x). Collision attacks are indiscriminate! Any x and y that have equal hashes will do. 
+
+I have an algorithm for a second pre-image attack in which the first 5 characters of the digest are identical. As far as I know, there isn't a feasible pre-image attack for an entire MD5 hash. More characters, worse time complexity. _(exercise6.py)_
+```python
+import hashlib
+
+fixed_hash = hashlib.md5()
+def preimage():
+    p= b'Hello world'
+    counter = 0
+    fixed_hash = hashlib.md5(p).hexdigest()[:5]
+    while True:
+        variable_hash = hashlib.md5(bytes(counter)).hexdigest()[:5]
+        if fixed_hash == variable_hash:
+            print(counter, fixed_hash, variable_hash)
+            break
+        counter += 1
+preimage()
+```
+
+```
+Output:
+254351 3e259 3e259
+```
+
+
+For collision resistance, there is a demonstration in _[(exercise1.py)](https://github.com/nickmura/realworld-cryptography-studygroup/blob/main/code/01_Hash_Functions/e0101.py)_ (provided by zk-community) that finds two inputs of images casted as bytestring, that provide a collision of the same hash. When executed or ran, it provides a collision of two inputs:
+```
+Output:
+>>> Collision detected! <<< md5:
+253dd04e87492e4fc3471de5e776bc3d
+-----
+
+Binary File Collision Detection
+ OK  sha256
+
+ OK  md5
+```
+
 
 ## ex-07
 > Explain and demonstrate the calculation of 'The Birthday Bound' Paradox.
@@ -130,8 +210,72 @@ _(exceeds 50% !)_
 ## ex-08
 > Find an input string which results in a SHA256 hash with 1/2/X 0's (zero).
 
+Here is a simple algorithm that results in a SHA256 with 4 leading zeroes. _(exercise8.py)_
+```python
+import secrets
+import hashlib
+
+while(True):
+    p=secrets.token_bytes(64)
+    h=hashlib.sha256(p).hexdigest()
+    if (h[0:4]=='0000'): break
+print(f'input to get 4 leading zeroes: {p.hex()}')
+print(f'hash with 4 leading zeroes: {h}')
+```
+
+```
+Output:
+input to get 4 leading zeroes: d33cdcf04734e2776a2a443a2bc3f66296b907b55712444ad8aa6c5822af7182c9a9bd95dca7ebec659d0e5e1adf10d5dff61fabe3758bef23f0c9ec73cd9398
+hash with 4 leading zeroes: 0000e8706579f94fdf28be2ad73573b0db71d81b074a97009e9806c9c620021e
+```
+
+
+
+## ex-09
+> Find X (look up, don't over think it): md5(X).digest() > d41d8cd98f00b204e9800998ecf8427e
+
+Using this [code](https://gist.github.com/miodeqqq/8e064f14d446348914f0e45818234a2e?permalink_comment_id=4002462#gistcomment-4002462) I found here
+for decrypting a MD5 hash, with the change below I made to it's result _(exercise9.py)_:
+
+```python
+print(f"The input for this hash or reversal is: '{decryptMD5(sys.argv[1])}'")
+```
+Executing/running this file with the provided hash returns me this output, an empty string as the input for the hash:
+```Output:
+[*] Decrypting hash!
+decryptMD5 Time: 0.000 s
+The input for this hash or reversal is: ''
+[+] Hash decrypted! :)
+```
+
+[Other resource cites this hash as an empty string aswell.](https://md5.gromweb.com/?md5=d41d8cd98f00b204e9800998ecf8427e)
+
+## ex-10
+> Prepare an exercise related to XOR bitwise operations (compress/uncompress)
+
 Currently not completed.
 
+## ex-11
+> Prepare an exercise related to serialization / deserialization
 
+Currently not completed.
+
+## ex-12
+> Explain and demonstrate the difference between cryptographic hash functions and checksum functions (CRC32)
+
+A hash function is a one way function that takes a input of data and produces a unique string of bytes in return. The hash function is precedented and is present in all faucets of cryptography, and the internet. Construction of hash functions are rarely used alone, as they are a rudimentary building block of cryptography. As demonstrated in previous exercises such as _exercise4.py, exercise6.py, and exercise8.py_ the implications of constructing a hash function are intuitive.
+
+A checksum is a mathematical value typically assigned to a piece of data to verify its validity, such as that it has not been changed. In the case of CRC32, it returns or computes a 32 bit integer value from a byte data type. Hash functions conventionally and generally do not have a digest of a 32 bit integer. Demonstrated below _(exercise12.py)_
+```python
+import zlib
+s = b'Hello world'
+
+crc = zlib.crc32(s)
+print(crc)
+```
+
+```
+Output: 2346098258
+```
 
 
