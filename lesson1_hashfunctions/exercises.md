@@ -1,7 +1,7 @@
 Exercise / assignments for Chapter 2 of Real World Cryptography,
 hash functions.
 
-# exercises lesson-1
+# exercises lesson-1 
 
 ## ex-01
 > MD5 is said to be ‘insecure/broken’. Which security properties are vulnerable? Prove it.
