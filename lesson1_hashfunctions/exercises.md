@@ -1,4 +1,4 @@
-Exercise / assignments for Chapter 1 of Real World Cryptography,
+Exercise / assignments for Chapter 2 of Real World Cryptography,
 hash functions.
 
 # exercises lesson-1
