@@ -248,24 +248,55 @@ The input for this hash or reversal is: ''
 [+] Hash decrypted! :)
 ```
 
-[Other resource cites this hash as an empty string aswell.](https://md5.gromweb.com/?md5=d41d8cd98f00b204e9800998ecf8427e)
+[Other resource cites this hash reversal as an empty string aswell.](https://md5.gromweb.com/?md5=d41d8cd98f00b204e9800998ecf8427e)
 
 ## ex-10
 > Prepare an exercise related to XOR bitwise operations (compress/uncompress)
 
-Currently not completed.
+
+
+ _Given only the output of a XOR operation, why can we uncompress or derive a definitive input?_
+
+
+ Given z (output), find x (input 1) and y (input 2) is simply not enough information to derive a discriminate or definitive input that would hold true
+ for all intents and purposes. (as far as I know) (pre-image attack is!). Take a look at the diagram from Real World Cryptography.
+ 
+
+ &nbsp;
+ 
+ ![image](https://user-images.githubusercontent.com/92566574/176490877-2d147b36-b447-4115-99ba-e586170bb589.png)
+
+&nbsp;
+
+As you can see, the logic can compute the same output for different combination of inputs. This means we can output the same thing with many different inputs, there we cannot evidently find the definitive input(s) that created this output! We can only get some inputs that
+are equivalent to the input, or a collision. We cannot say these are
+the specific inputs we are looking for, so it's not useful. x and y
+could be anything If we were given x (an input) and z, to find y (another input), it would be much easier to come to
+a definitive input (pre image attack)
+
+&nbsp;
+
+![image](https://user-images.githubusercontent.com/92566574/176491254-61da23a8-9f36-47d7-a97f-b14e3ea433bc.png)
+ 
+
 
 ## ex-11
 > Prepare an exercise related to serialization / deserialization
 
-Currently not completed.
+_What does serialization and deserialization mean?_
+&nbsp;
+
+Serialization is the idea of encoding or converting an object to a stream of bytes to store the object or transmit/transfer the object in a integral form that mitigates side effects, when performing actions or data exchange.
+
+Deserialization is the reversal of the aforementioned. Transforming the bytes stream back to it's original form and executing its intended purpose, (typically in the form of communicating or transfering). A usecase for serialization can simply be data storage, and deserialization when data needs to be accessed.
+
 
 ## ex-12
 > Explain and demonstrate the difference between cryptographic hash functions and checksum functions (CRC32)
 
 A hash function is a one way function that takes a input of data and produces a unique string of bytes in return. The hash function is precedented and is present in all faucets of cryptography, and the internet. Construction of hash functions are rarely used alone, as they are a rudimentary building block of cryptography. As demonstrated in previous exercises such as _exercise4.py, exercise6.py, and exercise8.py_ the implications of constructing a hash function are intuitive.
 
-A checksum is a mathematical value typically assigned to a piece of data to verify its validity, such as that it has not been changed. In the case of CRC32, it returns or computes a 32 bit integer value from a byte data type. Hash functions conventionally and generally do not have a digest of a 32 bit integer. Demonstrated below _(exercise12.py)_
+A checksum is a mathematical value typically assigned to a piece of data to verify its validity, such as that it has not been changed. In the case of CRC32, it returns or computes a 32 bit integer value from a byte data type. Demonstrated below _(exercise12.py)_
 ```python
 import zlib
 s = b'Hello world'
