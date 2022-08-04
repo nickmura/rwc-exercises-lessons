@@ -81,7 +81,7 @@ Advanced encryption, such as AES, is solely for the purpose of encoding informat
 > 
 Creating an intuitive demonstration for ECB is a bit difficult because the crypto libraries providing potential demonstrations for this standard are a bit difficult to work with, since ECB has quite insecure security properties.
 
-On page 71, *Figure 4.7*, There exists a diagram showing a well known example, outlining the fundamental insecure security property of ECB.
+On *page 71, Figure 4.7*, There exists a diagram showing a well known example, outlining the fundamental insecure security property of ECB.
 
 ![image](https://user-images.githubusercontent.com/92566574/182693904-8a5067e5-d887-4b0c-a174-59c65f0364d6.png)
 
@@ -92,4 +92,19 @@ However, the mapping used (electronic codebook) for deciding what value of plain
 ## ex-08
 
 > In AES-CBC, how can we prevent the ciphertext as well as the IV from being modified by an attacker?
+
+AES-CBC attempts to solves the issue that AES has with AES-ECB, revealing information about the plaintext because there are patterns of the 1:1 operation (plaintext to ciphered) in the ciphertext that can be deduced when the plaintext/data to be encrypted is larger than 16 bytes, due to the limitations of block ciphers.
+
+AES-CBC uses something called cipher block chaining (CBC), it takes an additional value called an initialization vector, which is randomized and unpredictable, and changes the value and 1:1 operation for each block of 16 bytes.
+Therefore, the encryption for the entire plaintext does not reveal any information or pattern of the plaintext.
+
+However, the problem with this mechanism (aswell as ECB) is that there is no integrity mechanism. An
+attacker can flip bits, or rather modify the the IV or ciphertext, causing the plaintext to change. This is demonstrated on *page 73, Figure 4.10*.
+
+![image](https://user-images.githubusercontent.com/92566574/182949236-f1298397-996a-4a15-b8df-2f2943aeda57.png)
+
+
+So we are able to combat this by implementing the HMAC, which provides an inherent integrity mechanism and invalidates any changes made to the cipher or IV, once the encryption has been made for the message. It is mentioned, that we use the MAC after padding the plaintext, and encrypting it over both the ciphertext and the IV,
+so in other words, after all encryption properties have been made to the plaintext, we apply the HMAC over it, like
+an indestructible piece of armor!
 
