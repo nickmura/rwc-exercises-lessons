@@ -108,3 +108,13 @@ So we are able to combat this by implementing the HMAC, which provides an inhere
 so in other words, after all encryption properties have been made to the plaintext, we apply the HMAC over it, like
 an indestructible piece of armor!
 
+# *Bonus questions*
+
+## ex-09
+
+> What is a property of message authentication codes that are falsely attributed? (What do people get wrong about MACs?)
+
+Message authentication codes solely are not for encryption purposes. MACs are used for data integrity verification and authentication. Encryption standards are used in combination to message authentication codes, so we can authenticate and verify that the message we are recieving, regardless of it being securely encrypted, is valid.
+
+## ex-10
+
