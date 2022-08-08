@@ -117,4 +117,120 @@ an indestructible piece of armor!
 Message authentication codes solely are not for encryption purposes. MACs are used for data integrity verification and authentication. Encryption standards are used in combination to message authentication codes, so we can authenticate and verify that the message we are recieving, regardless of it being securely encrypted, is valid.
 
 ## ex-10
+I have followed this tutorial from [nitratine.net](https://nitratine.net/blog/post/python-gcm-encryption-tutorial/) as how to implement AES-GCM in Python. The two files, and inputs and outputs are in `src/ex10_encrypt.py`, `src/ex10_decrypt.py` and `src/aes-gcm-input`.
 
+`aes-gcm-input/input.txt`
+```
+Hello, this is a message to be encrypted. 
+```
+
+`ex10_encrypt.py`
+```python
+from Crypto.Random import get_random_bytes
+from Crypto.Cipher import AES
+from Crypto.Protocol.KDF import scrypt
+
+BUFFER_SIZE = 1024 * 1024  # The size in bytes that we read, encrypt and write to at once
+
+
+password = "password"  # Get this from somewhere else like input()
+
+input_filename = 'aes-gcm-input/input.txt'  # Any file extension will work
+output_filename = input_filename + '.encrypted'  # You can name this anything, I'm just putting .encrypted on the end
+
+# Open files
+file_in = open(input_filename, 'rb')  # rb = read bytes. Required to read non-text files
+file_out = open(output_filename, 'wb')  # wb = write bytes. Required to write the encrypted data
+
+salt = get_random_bytes(32)  # Generate salt
+generatekey = scrypt(password, salt, key_len=32, N=2**17, r=8, p=1)
+key = b'\xb5\xed\xc3#\xdc@[\xcf>\xb6\xed\xa0\x927\r\x8az\xb4\xa3[\xb3 \xb5CuR\xd0\xc0O\x95y\xc9'  # Has a predefined (generated from generatekey) key that the recipient or person decrypting the input will share.
+file_out.write(salt)  # Write the salt to the top of the output file
+
+cipher = AES.new(key, AES.MODE_GCM)  # Create a cipher object to encrypt data
+file_out.write(cipher.nonce)  # Write out the nonce to the output file under the salt
+
+# Read, encrypt and write the data
+data = file_in.read(BUFFER_SIZE)  # Read in some of the file
+while len(data) != 0:  # Check if we need to encrypt anymore data
+    encrypted_data = cipher.encrypt(data)  # Encrypt the data we read
+    file_out.write(encrypted_data)  # Write the encrypted data to the output file
+    data = file_in.read(BUFFER_SIZE)  # Read some more of the file to see if there is any more left
+
+# Get and write the tag for decryption verification
+tag = cipher.digest()  # Signal to the cipher that we are done and get the tag
+file_out.write(tag)
+
+# Close both files
+file_in.close()
+file_out.close()
+```
+
+running `ex10_encrypt.py` creates this file `aes-gcm-input/input.txt.encrypted` which briefly outputs
+```
+��)�8�R��$�����M{*������F��QZ�S��...
+```
+
+`ex10_decrypt.py`
+
+```python
+import os
+
+from Crypto.Cipher import AES
+from Crypto.Protocol.KDF import scrypt
+
+BUFFER_SIZE = 1024 * 1024  # The size in bytes that we read, encrypt and write to at once
+
+
+password = "password"  # Get this from somewhere else like input()
+
+input_filename = 'aes-gcm-input/input.txt.encrypted'  # The encrypted file
+output_filename = 'aes-gcm-input/decrypted.txt'  # The decrypted file
+
+# Open files
+file_in = open(input_filename, 'rb')
+file_out = open(output_filename, 'wb')
+
+# Read salt and generate key
+salt = file_in.read(32)  # The salt we generated was 32 bits long
+key = b'\xb5\xed\xc3#\xdc@[\xcf>\xb6\xed\xa0\x927\r\x8az\xb4\xa3[\xb3 \xb5CuR\xd0\xc0O\x95y\xc9'  # The same key that was generated and hardcoded for encryption.
+# Read nonce and create cipher
+nonce = file_in.read(16)  # The nonce is 16 bytes long
+cipher = AES.new(key, AES.MODE_GCM, nonce=nonce)
+
+# Identify how many bytes of encrypted there is
+# We know that the salt (32) + the nonce (16) + the data (?) + the tag (16) is in the file
+# So some basic algebra can tell us how much data we need to read to decrypt
+file_in_size = os.path.getsize(input_filename)
+encrypted_data_size = file_in_size - 32 - 16 - 16  # Total - salt - nonce - tag = encrypted data
+
+# Read, decrypt and write the data
+for _ in range(int(encrypted_data_size / BUFFER_SIZE)):  # Identify how many loops of full buffer reads we need to do
+    data = file_in.read(BUFFER_SIZE)  # Read in some data from the encrypted file
+    decrypted_data = cipher.decrypt(data)  # Decrypt the data
+    file_out.write(decrypted_data)  # Write the decrypted data to the output file
+data = file_in.read(int(encrypted_data_size % BUFFER_SIZE))  # Read whatever we have calculated to be left of encrypted data
+decrypted_data = cipher.decrypt(data)  # Decrypt the data
+file_out.write(decrypted_data)  # Write the decrypted data to the output file
+
+# Verify encrypted file was not tampered with
+tag = file_in.read(16)
+try:
+    cipher.verify(tag)
+except ValueError as e:
+    # If we get a ValueError, there was an error when decrypting so delete the file we created
+    file_in.close()
+    file_out.close()
+    os.remove(output_filename)
+    raise e
+
+# If everything was ok, close the files
+file_in.close()
+file_out.close()
+```
+
+`aes-gcm-input/decrypted.txt`
+
+```
+Hello, this is a message to be encrypted. 
+```
