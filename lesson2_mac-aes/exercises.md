@@ -117,7 +117,11 @@ an indestructible piece of armor!
 Message authentication codes solely are not for encryption purposes. MACs are used for data integrity verification and authentication. Encryption standards are used in combination to message authentication codes, so we can authenticate and verify that the message we are recieving, regardless of it being securely encrypted, is valid.
 
 ## ex-10
-I have followed this tutorial from [nitratine.net](https://nitratine.net/blog/post/python-gcm-encryption-tutorial/) as how to implement AES-GCM in Python. The two files, and inputs and outputs are in `src/ex10_encrypt.py`, `src/ex10_decrypt.py` and `src/aes-gcm-input`.
+
+> Explain the properties of AES-GCM (AEAD) and demonstrate an implementation of AES-GCM.
+
+
+I have followed this tutorial from [nitratine.net](https://nitratine.net/blog/post/python-gcm-encryption-tutorial/) as how to implement AES-GCM in Python. The two files/demonstrations are located as `src/ex10_encrypt.py`, `src/ex10_decrypt.py`, and inputs and outputs are in `src/aes-gcm-input`.
 
 `aes-gcm-input/input.txt`
 ```
