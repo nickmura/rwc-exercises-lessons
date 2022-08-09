@@ -22,7 +22,7 @@ On page 57 of RWC, David Wong writes, "Message authentication codes are often de
 
 > Not all MACs are PRFs. Can you see why?
 
-The security goal of a psuedorandom function (PRF) that it guarantees that all of its outputs appear random and are indistinguishable, regardless of how the corresponding inputs were chosen, and that it's a deterministic function.
+The security goal of a psuedorandom function (PRF) that it guarantees that all of its outputs appear random and are indistinguishable, regardless of how the corresponding inputs were chosen.
 
 The security goal of a message authentication code that it guarantees the data integrity and authenticates that it's
 a valid message from where it originated and the recipient, and that it's a deterministic function
