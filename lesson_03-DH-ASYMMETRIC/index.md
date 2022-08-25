@@ -70,8 +70,9 @@ defined by the 2,048-bit prime modulus...*
 ## ex-06
 > Why do the other standards of Diffie Hellman have best practice 2048 bit prime number security while ECDH is 256 bit?
 
-
-
+ECDLP is a more robust and difficult version of DLP. Elliptic curves defined on a finite field are typically in a additive group (while DH/galois group is a multiplicative group), which means given a member of the set, find two members of the set that are the sum of the original. (C = A+B) while A,B can respectively be
+used in the same relationship as C (A could be c for other points, aswell as B).
+A great video demonstrating the properties of ECDH can be found [here](https://www.youtube.com/watch?v=NF1pwjL9-DE).
 
 ## ex-07
 > Explain the goal of asymmetric encryption and provide a real world example of what it's used for.
@@ -109,18 +110,32 @@ In 1998 someone named Daniel Bleichenbacher wrote a paper titled "Chosen ciphert
 
 - Diffie Hellman relies on the *discrete logarithm problem*, which is one of the three hardness assumptions that asymmetric cryptography relies on. Here is a demonstration
 I've made that outlines the different aspects of the algorithm. 
-In more simpler terms of this diagram, to compute the algorithm to get A, it's relatively easy. But to reverse and solve for `a`, and the `mod p` for the generator, it's inherently a very difficult problem. It's analagous to a one way function but in a formal mathematical sense.
-
-
+In more simpler terms of this diagram, to compute the algorithm to get A, it's relatively easy. But to reverse and solve for `a`, and the `mod p` for the generator, it's inherently a very difficult problem.
+It's analagous to a one way function but in a formal mathematical sense.
 ![image](https://user-images.githubusercontent.com/92566574/185941130-1ae0d73d-a15b-42ad-9401-8d1833d201d7.png)
 
 
-- Elliptic Curve Diffie Hellman relies on the *elliptic curve logarithm problem* which is simply the algorithm we mentioned above but specific to the elliptic curve group that is different than the Galois group of elements, other standards of DH rely on.
+- Elliptic Curve Diffie Hellman relies on the *elliptic curve logarithm problem* which is simply the algorithm we mentioned above but specific to the elliptic curve group that is different than the Galois group other standards of DH rely on.
 
 
-- RSA relies on the factoring problem of prime numbers. Multiplying two large prime numbers results in a product that is extremely difficult to compute for either. The only person who can decrypt the message
-is the individual who knows the prime numbers.
+- RSA relies on the factoring problem of prime numbers
+Multiplying two large prime numbers results in a product that is extremely difficult to compute for either. The only person who can decrypt the message is the individual who knows the prime numbers.
 
+# ex-13
 
+> Explain Figure 6.9 on page 115 step by step how a hybrid encryption message is produced and sent.
 
-![image](https://user-images.githubusercontent.com/92566574/185953439-5e5d166e-8ab9-4b9e-bde4-48f66f012448.png)
+![image](https://user-images.githubusercontent.com/92566574/186472312-ff7790a2-f358-498a-bae1-874935444349.png)
+
+1) To encrypt a message to Alice using hybrid encryption with asymmetric encryption, you generate a symmetric key
+   
+2) Then you use the symmetric key to authenticate and encrypt your message to Alice
+   
+3) Then you encrypt the symmetric key by using Alice's public key
+with an asymmetric algorithm
+
+4) Sending the ecrypted symmetric key and encrypted message to Alice
+
+5) Alice decrypts the symmetric key using her private key.
+
+6) Then after having the symmetric key, she can use the symmetric key to decrypt the raw data message
