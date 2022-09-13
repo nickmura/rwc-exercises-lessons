@@ -151,4 +151,4 @@ First a mnemonic of 12 or 24 words is generated, and then we use PBKDF2 with the
 > What's the difference between interactive and non-interactive proofs?
 
 ## exercise-19  
-> What is the merit of the Schnorr signature?
+> What is the merit of the Fiat-shamir heuristic?
