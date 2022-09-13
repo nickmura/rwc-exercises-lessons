@@ -148,4 +148,7 @@ First a mnemonic of 12 or 24 words is generated, and then we use PBKDF2 with the
 
 
 ## exercise-18
-> What's the difference between interactive and non-interactive proofs?  
+> What's the difference between interactive and non-interactive proofs?
+
+## exercise-19  
+> What is the merit of the Schnorr signature?
