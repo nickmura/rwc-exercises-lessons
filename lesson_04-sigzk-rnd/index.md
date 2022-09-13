@@ -141,11 +141,11 @@ First a mnemonic of 12 or 24 words is generated, and then we use PBKDF2 with the
 
 
 ## exercise-16
-What is the goal of zero knowledge proofs?
+> What is the goal of zero knowledge proofs?
 
 ## exercise-17
-What is a significant real world example of a zero knowledge proof?
+> What is a significant real world example of a zero knowledge proof?
 
 
 ## exercise-18
-## What's the difference between interactive and non-interactive proofs?  
+> What's the difference between interactive and non-interactive proofs?  
