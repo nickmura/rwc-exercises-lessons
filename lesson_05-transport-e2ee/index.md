@@ -54,6 +54,10 @@ If the server parameters or version of TLS doesn't match the client, then the co
 
 > What is the Noise protocol?
 
+Noise protocol is a cryptography framework/library based on Diffie Hellman key exchanges. Noise can be implemented for simple communication or a secure transport. The reason why it's significant or relevant to us is because it consists of two parties exchanging a handshake, which there are many different handshakes the noise protocol can rely on for a protocol.
+
+Noise is a **protocol framework**. Meaning it is not a singular protocol, rather it's a framework for building many different protocols.
+
 ## exercise-09
 
 > What is the difference between end-to-end encryption and 'secure transport protocols'?
