@@ -40,14 +40,19 @@ Also, single-sign-on as mentioned above is typically an alternative to a convent
 > Why is cryptocurrency significant to cryptography or vice-versa?
 
 
+
 ## exercise-08
 
 > Why are cryptographic gurantees so nessescary for blockchain & cryptocurrency applications?
 
+Cryptocurrencies, in general, exist and were concieved for an environment where ALL participiants are assumed to be adversarial. The reason we need strong cryptographic gurantees as it's the dependant techniques to ensure the integrity of the system. Cryptography, as a general definition, is 
+'..the practice or study of techniques for secure communication in the presence of adversarial behavior'. So comunicating, and transacting with adversarial participants in an economic system, probably requires cryptography, aswell as all of the applications built for these participants. 
 
 ## exercise-09
 
 > Give a few reasons why cryptography development and research has been centered around cryptocurrencies in the last few years.
+
+Cryptography has been a bit of a niche field of research - cryptocurrencies and blockchain development has created a new demand for cryptography research as the environment is maximally adversial so applied cryptographic security gurantees are nessescary, and will recieve the most recongition amd research. Cryptography research and applications will still be researched outside of cryptocurrencies and blockchains.
 
 ## exercise-10
 
@@ -57,6 +62,10 @@ Also, single-sign-on as mentioned above is typically an alternative to a convent
 ## exercise-11 
 
 > Name a few implementations of ECDSA in blockchains.
+
+ECDSA is used for ethereum digital signatures.
+ECDSA is also used for constructing public keys, and addresses.
+ECDSA is also used for bitcoin digital signatures
 
 
 ## exercise-12
