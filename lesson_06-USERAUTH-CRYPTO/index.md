@@ -13,15 +13,24 @@ Another form of user authentication would be connecting to a SSH session with a 
 
 > What is the difference between user authentication and data authentication?
 
+
+User authentication is to ensure the integrity of a given user being
+valid which a wide range of cryptography and networking primitives can provide, where as, data authentication is to ensure the integrity of a given set of data being  valid and expected. Hash functions, MACs, etc.
+
+
 ## exercise-03
 
 > what is the most common form of general user-authentication?
+
+Username and password, password stored in database. Single-sign-on authentication is becoming more conventional by the day however user authentication for those applications (Google, Apple, Facebook, etc) are created with username and passwords
 
 ## exercise-04
 
 > Name a few fundamental problems with passwords.
 
+- Passwords can be brute-forced and cracked, which requires more robust or verbose password requirements for services
 
+- The more verbose the requirements have to be for a password, the less intuitive it is to authenticate a user, which potentially sacrafices the entire point of a password - to authenticate a user (if the user doesn't remem ber their password since it was so robust)
 ## exercise-05
 
 > Could you think of a real world example of a Single-sign on?
@@ -35,10 +44,14 @@ Also, single-sign-on as mentioned above is typically an alternative to a convent
 
 > What is an 'oblivious psuedorandom function'?
 
+
+
 ## exercise-07
 
-> Why is cryptocurrency significant to cryptography or vice-versa?
+> Why is cryptography significant to cryptocurrency or vice-versa?
 
+
+Cryptocurrency is built of cryptography systems and is the forefront of cryptography research as the entire environment is adversarial, which is perfect for cryptography, and the intended purpose for cryptography. Cryptocurrencies are significant to cryptography because as mentioned they provide an excellent and involved ecosystem for research and development as crypto solutions will always 
 
 
 ## exercise-08
@@ -58,6 +71,7 @@ Cryptography has been a bit of a niche field of research - cryptocurrencies and 
 
 > What is a merkle tree?
 
+A merkle tree is a hash tree in which every leaf is labelled with a hash of a data block, and every node that is not a leaf. A child node, allows efficient and secure verification of the contents of a large data structure.
 
 ## exercise-11 
 
